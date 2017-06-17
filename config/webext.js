@@ -18,7 +18,10 @@ module.exports = function (env) {
         devtool: 'cheap-module-source-map',
         entry: {
             background: './src/webext/background/index.js',
-            app: './src/webext/app/index.js'
+            app: './src/webext/app/index.js',
+
+            scrolldn: './src/webext/command-scripts/scrolldn/contentscript.js',
+            scrollup: './src/webext/command-scripts/scrollup/contentscript.js'
         },
         output: {
             path: path.join(__dirname, '../dist/webext'),

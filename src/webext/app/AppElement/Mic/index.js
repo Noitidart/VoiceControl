@@ -3,8 +3,10 @@ import React, { Component } from 'react'
 const streamText = require('watson-speech/speech-to-text/recognize-microphone');
 
 import { STATUS, startListen, stopListen, authListen, errorListen } from '../../../flows/mic'
+import { execCommand } from '../../../flows/commands'
 
 import { getToken } from './WatsonSTT/utils'
+import { wordSimilarity } from './utils'
 
 const TOKEN_STATUS = { // short for TOKEN_STATUS
     UNINIT: 'UNINIT',
@@ -116,7 +118,34 @@ class Mic extends Component {
         if (this.tstream) this.tstream.stop();
     }
     handleData = data => {
+        const { commands, dispatch } = this.props;
         console.log('data:', data);
+
+
+        data = data.replace(/\./g, '');
+
+        extension.notifications.create({
+            type: 'basic',
+            iconUrl: extension.extension.getURL('images/icon48.png'),
+            title: 'You said...',
+            message: `"${data}"`
+        });
+
+        const similaritys = []; // {id, conf} conf is confidence, similarity id is command id and vaue is similarity
+        for (const command of Object.values(commands)) {
+            similaritys.push({
+                id: command.id,
+                conf: wordSimilarity(data, command.trigger)
+            });
+        }
+        similaritys.sort( (sima, simb) => simb.conf - sima.conf );
+        console.log('similaritys:', similaritys);
+
+        const most_similar = similaritys[0];
+        const MIN_CONF = 0.6;
+        if (most_similar.conf >= MIN_CONF) {
+            dispatch(execCommand(most_similar.id));
+        }
     }
     handleError = err => {
         const { dispatch } = this.props;

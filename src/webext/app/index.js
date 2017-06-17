@@ -14,5 +14,6 @@ export const callIn = (...args) => new Promise(resolve => exports['callIn' + arg
 
 renderProxiedElement([callInBackground, 'gReduxServer'], AppElement, document.getElementById('root'), [
     'core',
-    'mic'
+    'mic',
+    'commands'
 ]);
