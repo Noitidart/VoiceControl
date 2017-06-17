@@ -1,0 +1,12 @@
+{
+    "webext": {
+        "replace": {
+            "~ADDON_NAME~": "VoiceControl",
+            "~ADDON_NAME_HYPH~": "VoiceControl",
+            "~ADDON_VERSION~": "1.0",
+            "~ADDON_ID~": "@voicecontrol",
+            "~ADDON_DESC~": "Browsing and navigation shortcuts acitvated by your voice. A keyboard-less and mouse-less experience!",
+            "~ADDON_SHUTDOWN_WAR~": "autogened"
+        }
+    }
+}
